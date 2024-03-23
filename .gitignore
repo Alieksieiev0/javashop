@@ -62,3 +62,5 @@ out/
 ### VS Code ###
 .vscode/
 >>>>>>> 9b44c1e (Initial commit; Add basic CRUD operations for Product and Category models)
+
+.env
