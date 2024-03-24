@@ -37,9 +37,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto save(ProductDto productDto) {
-
-        System.out.println("DTO: " + productDto);
-        System.out.println(mapper.toModel(productDto));
         return mapper.toDto(productRepository.save(mapper.toModel(productDto)));
     }
 

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class JavashopApplication {
 
     public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.configure().load();
+        Dotenv dotenv = Dotenv.load();
 
         System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
         System.setProperty("DB_USER", dotenv.get("DB_USER"));
