@@ -1,3 +1,10 @@
 package com.github.javashop.service;
 
-public interface JWTService {}
+import java.util.Map;
+import java.util.Set;
+
+public interface JWTService {
+    public String createJWT(Map<String, Object> claims);
+
+    public Map<String, Object> readJWT(String token, Set<String> claimKeys);
+}

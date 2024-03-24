@@ -10,6 +10,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
+@Service
 public class JWTServiceImpl {
 
     public String createJWT(Map<String, Object> claims) {
@@ -43,7 +46,7 @@ public class JWTServiceImpl {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET_KEY));
     }
 
-    public Date getExpiration(int unitType, int tokenDurationInUnitType) {
+    private Date getExpiration(int unitType, int tokenDurationInUnitType) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(unitType, tokenDurationInUnitType);
