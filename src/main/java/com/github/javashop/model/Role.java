@@ -8,7 +8,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -22,6 +25,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @SQLDelete(sql = "UPDATE roles SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
 @Table(name = "roles")
@@ -31,6 +37,7 @@ public class Role {
     private UUID id;
 
     @NotNull private String name;
+    @NotNull @Builder.Default private boolean isDeleted = false;
 
     @OneToMany(mappedBy = User_.ROLE)
     private Set<User> users;

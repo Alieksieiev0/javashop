@@ -1,9 +1,11 @@
 package com.github.javashop.service;
 
-import com.github.javashop.dto.UserDto;
+import com.github.javashop.dto.UserRequestDto;
+import com.github.javashop.dto.UserResponseDto;
 
 public interface UserService {
-    public UserDto register(UserDto userDto);
 
-    public UserDto login(UserDto userDto);
+    public UserResponseDto save(UserRequestDto userRequestDto);
+
+    public UserResponseDto save(UserRequestDto userRequestDto, String roleName);
 }

@@ -1,11 +1,8 @@
 package com.github.javashop.service.impl;
 
-import static com.github.javashop.config.Constants.JWT_DURATION_IN_UNIT_TYPE;
-import static com.github.javashop.config.Constants.JWT_SECRET_KEY;
-import static com.github.javashop.config.Constants.JWT_UNIT_TYPE;
-
 import com.github.javashop.service.JWTService;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -25,6 +22,9 @@ import javax.crypto.SecretKey;
 
 @Service
 public class JWTServiceImpl implements JWTService {
+    private static final int JWT_UNIT_TYPE = Calendar.MINUTE;
+    private static final int JWT_DURATION_IN_UNIT_TYPE = 360;
+    private static final String JWT_SECRET_KEY = Dotenv.load().get("JWT_SECRET_KEY");
 
     public String createJWT(Map<String, Object> claims) {
         return Jwts.builder()

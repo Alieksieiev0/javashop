@@ -7,9 +7,10 @@ services:
       - "8080:8080"
     volumes:
       - .:/app
-    environment:
-      - DOCKER_HOST="docker-host"
-    restart: always
+    develop:
+      watch:
+        - action: rebuild
+          path: .
   db:
     image: postgres
     volumes:

@@ -1,6 +1,9 @@
 package com.github.javashop.filter;
 
-import com.github.javashop.repository.UserRepository;
+import static com.github.javashop.config.Constants.PASSWORD;
+import static com.github.javashop.config.Constants.ROLE;
+import static com.github.javashop.config.Constants.USERNAME;
+
 import com.github.javashop.service.JWTService;
 
 import jakarta.servlet.FilterChain;
@@ -22,27 +25,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
-    private final UserRepository userRepository;
-    private final String USERNAME = "username";
+    private final String BEARER = "Bearer ";
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header == null || !header.startsWith("Bearer ")) {
+        final String token = parseToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        if (token.isEmpty()) {
             chain.doFilter(request, response);
             return;
         }
 
-        final String token = header.split(" ")[1].trim();
         Jwt jwt;
         try {
             jwt = jwtService.readJWT(token);
@@ -51,25 +50,25 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication =
-                getUserAuthenticationToken(request, getUser(jwt));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(getAuthentication(request, jwt));
         chain.doFilter(request, response);
     }
 
-    private com.github.javashop.model.User getUser(Jwt jwt) {
-        return userRepository
-                .findByUsername(jwt.getClaim(USERNAME))
-                .orElseThrow(() -> new NoSuchElementException());
+    private String parseToken(String header) {
+        if (header == null || !header.startsWith(BEARER)) {
+            return "";
+        }
+
+        return header.split(" ")[1].trim();
     }
 
-    private UsernamePasswordAuthenticationToken getUserAuthenticationToken(
-            HttpServletRequest request, com.github.javashop.model.User user) {
+    private UsernamePasswordAuthenticationToken getAuthentication(
+            HttpServletRequest request, Jwt jwt) {
         UserDetails userDetails =
                 User.builder()
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .roles(user.getRole().getName())
+                        .username(jwt.getClaim(USERNAME))
+                        .password(jwt.getClaim(PASSWORD))
+                        .roles((String) jwt.getClaim(ROLE))
                         .build();
 
         UsernamePasswordAuthenticationToken authentication =
