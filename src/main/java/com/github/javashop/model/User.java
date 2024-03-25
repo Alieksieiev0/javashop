@@ -10,15 +10,21 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
 @Entity
-@Data
+@DynamicUpdate
+@Getter
+@Setter
+@ToString
 @SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email"}))
@@ -33,5 +39,6 @@ public class User {
     @NotNull private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Role role;
 }

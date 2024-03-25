@@ -1,10 +1,12 @@
 package com.github.javashop.service;
 
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtException;
+
 import java.util.Map;
-import java.util.Set;
 
 public interface JWTService {
     public String createJWT(Map<String, Object> claims);
 
-    public Map<String, Object> readJWT(String token, Set<String> claimKeys);
+    public Jwt readJWT(String token) throws JwtException;
 }

@@ -15,4 +15,6 @@ public final class Constants {
     public static final int JWT_UNIT_TYPE = Calendar.MINUTE;
     public static final int JWT_DURATION_IN_UNIT_TYPE = 360;
     public static final String JWT_SECRET_KEY = Dotenv.load().get("JWT_SECRET_KEY");
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_USER = "USER";
 }

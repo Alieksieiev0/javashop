@@ -12,10 +12,10 @@ import org.mapstruct.Mapping;
 public interface CategoryProductMapper {
 
     @Mapping(target = "categories", ignore = true)
-    @Mapping(target = ".", source = "categoryProduct.product")
+    @Mapping(target = ".", source = "product")
     ProductDto toProductDto(CategoryProduct categoryProduct);
 
     @Mapping(target = "products", ignore = true)
-    @Mapping(target = ".", source = "categoryProduct.category")
+    @Mapping(target = ".", source = "category")
     CategoryDto toCategoryDto(CategoryProduct categoryProduct);
 }
