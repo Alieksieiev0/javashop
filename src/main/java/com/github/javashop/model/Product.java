@@ -7,16 +7,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,7 +41,16 @@ public class Product {
     @NotNull private String name;
     private String description;
     @NotNull private String code;
+    @NotNull private Double price;
     @NotNull private boolean isDeleted = false;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
     @OneToMany(mappedBy = CategoryProduct_.PRODUCT, cascade = CascadeType.ALL)
     private Set<CategoryProduct> categoryProducts;

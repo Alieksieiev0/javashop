@@ -1,15 +1,18 @@
 package com.github.javashop.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
-public class ProductDto {
-    private UUID id;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ProductDto extends BaseDto {
     private String name;
     private String description;
     private String code;
+    private Double price;
     private List<CategoryDto> categories;
 }

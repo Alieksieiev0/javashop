@@ -5,6 +5,8 @@ import com.github.javashop.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -24,23 +25,25 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{id}")
-    public ProductDto get(@PathVariable UUID id) {
-        return productService.findById(id);
+    public ResponseEntity<Object> get(@PathVariable UUID id) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping
-    public List<ProductDto> getAll() {
-        return productService.findAll();
+    public ResponseEntity<Object> getAll() {
+        return ResponseEntity.ok(productService.findAll());
     }
 
     @PostMapping
-    public ProductDto create(@RequestBody ProductDto productDto) {
-        return productService.save(productDto);
+    public ResponseEntity<Object> create(@RequestBody ProductDto productDto) {
+        System.out.println(productDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productDto));
     }
 
     @PutMapping("/{id}")
-    public ProductDto update(@PathVariable UUID id, @RequestBody ProductDto productDto) {
-        return productService.update(id, productDto);
+    public ResponseEntity<Object> update(
+            @PathVariable UUID id, @RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.update(id, productDto));
     }
 
     @DeleteMapping("/{id}")

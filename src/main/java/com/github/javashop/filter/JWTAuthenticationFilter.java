@@ -37,6 +37,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String token = parseToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        System.out.println(token);
         if (token.isEmpty()) {
             chain.doFilter(request, response);
             return;
@@ -49,6 +50,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+        System.out.println("--------");
 
         SecurityContextHolder.getContext().setAuthentication(getAuthentication(request, jwt));
         chain.doFilter(request, response);
@@ -70,6 +72,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                         .password(jwt.getClaim(PASSWORD))
                         .roles((String) jwt.getClaim(ROLE))
                         .build();
+        System.out.println(userDetails);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(

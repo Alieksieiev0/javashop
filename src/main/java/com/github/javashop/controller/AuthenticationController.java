@@ -1,14 +1,17 @@
 package com.github.javashop.controller;
 
 import com.github.javashop.dto.UserRequestDto;
-import com.github.javashop.dto.UserResponseDto;
 import com.github.javashop.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,15 +20,13 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public void register(@RequestBody UserRequestDto userRequestDto) {
-        System.out.println("----------------------------");
-        System.out.println(userRequestDto);
-        System.out.println(userRequestDto.getEmail());
-        System.out.println(userRequestDto.getUsername());
         authenticationService.register(userRequestDto);
     }
 
     @PostMapping("/login")
-    public UserResponseDto login(@RequestBody UserRequestDto userRequestDto) {
-        return authenticationService.login(userRequestDto);
+    public ResponseEntity<Object> login(@RequestBody UserRequestDto userRequestDto) {
+        Map<String, String> responseToken = new HashMap<>();
+        responseToken.put("token", authenticationService.login(userRequestDto));
+        return ResponseEntity.ok(responseToken);
     }
 }
