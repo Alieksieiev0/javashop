@@ -1,0 +1,20 @@
+
+import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.data.AbstractRepositoryInitializer;
+
+@Component
+public class DataInitializer extends AbstractRepositoryInitializer<User, UserRepository> {
+
+    public DataInitializer(UserRepository userRepository) {
+        super(userRepository);
+    }
+
+    @Override
+    protected Iterable<User> initialize(UserRepository userRepository) {
+        return userRepository.saveAll(List.of(
+            new User("user1", "user1@example.com"),
+            new User("user2", "user2@example.com")
+        ));
+    }
+}
+
